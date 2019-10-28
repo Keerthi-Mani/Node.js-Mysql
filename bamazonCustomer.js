@@ -25,28 +25,16 @@ connection.connect(function (err) {
 
 });
 
-var displayProducts = function () {
+function displayProducts() {
     // query the database for all items being listed
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        else {
-            //console.log(results);
-            console.log('_____________________________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._________________________')
-            console.log("----------------------------------------------------------------------------------------------------");
+        //console.log(results);
+        console.log("----------------------------------------------------------------------------------------");
+        console.log('____________________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._______________________');
+        console.log("-----------------------------------------------------------------------------------------");
 
-            for (var i = 0; i < results.length; i++) {
-                var listProducts = [
-                    {
-                        Item_id: results[i].item_id,
-                        Product_Name: results[i].product_name,
-                        Department_Name: results[i].department_name,
-                        Price: results[i].price,
-                        Stock_quantity: results[i].stock_quantity
-                    }
-                ]
-                console.table(listProducts);
-            }
-        }
+        console.table(results)
         userPurchase();
     });
 }
@@ -106,38 +94,36 @@ function userPurchase() {
                         // Calculating new stock_quantity
                         var newStock = results[i].stock_quantity - answer.stock_quantity;
                         var purchaseId = answer.item_id;
-                        confirmPrompt();
+
+                        inquirer.prompt([
+                            {
+                                type: "confirm",
+                                name: "continue",
+                                message: "\nWould you like to place an order?",
+                                default: true
+                            }
+                        ]).then(function (user) {
+                            if (user.continue === true) {
+                                //if user confirms purchase, update mysql database with new stock quantity by subtracting user quantity purchased.
+                                connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newStock, purchaseId], function (err, res) {
+
+                                });
+                                console.log("=======================================");
+                                console.log("\nYour order has placed successfully!");
+                                console.log("\nThank You!!");
+                                console.log("\n=======================================");
+                            }
+                            else {
+                                console.log("=======================================");
+                                console.log("\nNo Worries!! Thank you! Come back soon!");
+                                console.log("\n=======================================");
+                            }
+                        });
+
                     }
                 }
             }
         });
-    });
-}
-
-function confirmPrompt() {
-    inquirer.prompt([
-        {
-            type: "confirm",
-            name: "continue",
-            message: "Would you like to place an order?",
-            default: true
-        }
-    ]).then(function (user) {
-        if (user.continue === true) {
-            //if user confirms purchase, update mysql database with new stock quantity by subtracting user quantity purchased.
-            connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [newStock, purchaseId], function (err, res) {
-
-            });
-            console.log("=======================================");
-            console.log("\nYour order has placed successfully!");
-            console.log("\nThank You!!");
-            console.log("\n=======================================");
-        }
-        else {
-            console.log("=======================================");
-            console.log("\nNo Worries!! Thank you! Come back soon!");
-            console.log("\n=======================================");
-        }
     });
 }
 

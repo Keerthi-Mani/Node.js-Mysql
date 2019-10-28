@@ -54,65 +54,40 @@ function start() {
     });
 }
 
-//views all the available products
+//Manager views all the available products in the store
 function viewProducts() {
-    console.log("\nViewing the products!");
     // query the database for all items being listed
     connection.query("SELECT * FROM products", function (err, results) {
         if (err) throw err;
-        else {
-            //console.log(results);
-            console.log('_____________________________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._________________________');
-            console.log('\n\n-----------------------------------------"View Products for Sale"----------------------------------------------------');
-            for (var i = 0; i < results.length; i++) {
-                var listProducts = [
-                    {
-                        Item_id: results[i].item_id,
-                        Product_Name: results[i].product_name,
-                        Department_Name: results[i].department_name,
-                        Price: results[i].price,
-                        Stock_quantity: results[i].stock_quantity
-                    }
-                ]
-                console.table(listProducts);
-            }
-        }
+
+        //console.log(results);
+        console.log('----------------------------------------------------------------------------------------------------');
+        console.log('_____________________________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._________________________');
+        console.log('----------------------------------------------------------------------------------------------------');
+        console.log("\n===================================");
+        console.log('\n\n"View Products for Sale"');
+        console.log("\n===================================");
+
+        console.table(results);
         start();
     });
 }
 
-//views inventory count lower than 5
+//Manager views inventory's stocks count lower than 5
 function viewInventory() {
     // query the database for all items being listed
-    connection.query("SELECT * FROM products", function (err, results) {
+    connection.query("SELECT * FROM products WHERE stock_quantity <=5 ", function (err, results) {
         if (err) throw err;
-        else {
-            //console.log(results);
-            console.log('---------------------------------------"View Low Inventory"-----------------------------------------------------');
-            console.log("");
-
-            for (var i = 0; i < results.length; i++) {
-                if (results[i].stock_quantity <= 5) {
-                    var listProducts = [
-                        {
-                            Item_id: results[i].item_id,
-                            Product_Name: results[i].product_name,
-                            Department_Name: results[i].department_name,
-                            Price: results[i].price,
-                            Stock_quantity: results[i].stock_quantity
-                        }
-                    ]
-                    console.table(listProducts);
-                    console.log('----------------------------------------------------------------------------------------------------');
-                }
-            }
-        }
+        //console.log(results);
+        console.log('---------------------------------------"View Low Inventory"-----------------------------------------------------');
+        console.log("");
+        console.table(results);
         start();
     });
 
 }
 
-//let you add more of any item currently in the store
+//Manager updates an inventory in the stock
 function addInventory() {
     console.log("Add to the Inventory...\n");
 
@@ -145,7 +120,8 @@ function addInventory() {
         start();
     });
 }
-//add new product
+
+//Manager adds new items in the products
 function addProduct() {
     console.log("\nAdding new product!");
     inquirer.prompt([
@@ -195,13 +171,11 @@ function addProduct() {
             },
             function (err, res) {
                 if (err) throw err;
-                else {
-                    console.log("\n======================================= ");
-                    console.log("");
-                    console.log("Your product is added successfully!");
-                    console.log("");
-                    console.log("=======================================");
-                }
+                console.log("\n======================================= ");
+                console.log("");
+                console.log("Your product is added successfully!");
+                console.log("");
+                console.log("=======================================");
             });
         start();
     });

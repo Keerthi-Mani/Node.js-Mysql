@@ -4,7 +4,7 @@ This is bamazon. Bamazon, as it's name suggests, is a simple e-commerce app, or 
 
 Bamazon uses some third-party node modules, has it's own modules, and connects to a mysql database to store and retrieve product and department information.
 
-### Getting Started
+## Getting Started
 To get started on this project, follow the installations instructions below.
 
 * Clone repo.
@@ -15,9 +15,9 @@ To get started on this project, follow the installations instructions below.
     * Exective - 'npm run exective'
     * Run 'ctrl + c' to exit each mode
 
-### What Each JavaScript Does
+## What Each JavaScript Does
 
-1. BamazonCustomer.js
+### 1. BamazonCustomer.js
 
 * Prints the products in the store.
 
@@ -34,14 +34,14 @@ To get started on this project, follow the installations instructions below.
 node bamazonManager.js
 ```
 
-2. BamazonManager.js
+### 2. BamazonManager.js
 
-    * Starts with a menu:
+* Starts with a menu:
 
-        - View Products for Sale
-        - View Low Inventory
-        - Add to Inventory
-        - Add New Product
+    * View Products for Sale
+    * View Low Inventory
+    * Add to Inventory
+    * Add New Product
         
 * If the manager selects View Products for Sale, it lists all of the products in the store including all of their details.
 
@@ -56,7 +56,7 @@ node bamazonManager.js
 node bamazonManager.js
 ```
 
-### Technologies used
+## Technologies used
 
 Bamazon uses these node modules: 
 
@@ -70,12 +70,12 @@ They are all dependencies in the [package.json](https://docs.npmjs.com/files/pac
 npm install
 ```
 
-#### Prerequisites
+## Prerequisites
 ```sh
 - Node.js - Download the latest version of Node https://nodejs.org/en/
 - Create a MYSQL database called 'Bamazon', reference schema.sql
 ```
-### Built With
+## Built With
 
 - [MySQLWorkbench](https://www.mysql.com/products/workbench/)
 - [Terminal/Gitbash](https://openterminal.en.softonic.com/mac)

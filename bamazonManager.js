@@ -80,16 +80,6 @@ function viewInventory() {
         console.table(results);
         start();
     });
-
-    connection.query("SELECT * FROM products WHERE stock_quantity >5 ", function (err, results) {
-        if (err) throw err;
-        //console.log(results);
-        console.log("\n======================================");
-        console.log("\nHOORAY!! We don't have low inventory!!");
-        console.log("\n======================================");
-        start();
-    });
-
 }
 
 //Manager updates an inventory in the stock

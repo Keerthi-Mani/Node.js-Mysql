@@ -21,34 +21,34 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function (err) {
     if (err) throw err;
-    console.log("\nconnected as id " + connection.threadId + "\n");
 
 });
 
+//prompt for manager to choose either to view products or add inventory or view low inventory or add new product
 function start() {
     inquirer.prompt([
         {
             type: "list",
             name: "menu_options",
             message: "Select any options from the menu : ",
-            choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"]
+            choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product", "Quit"]
         },
     ]).then(function (chose) {
         switch (chose.menu_options) {
-            case
-                "View Products for Sale": viewProducts();
+            case "View Products for Sale":
+                viewProducts();
                 break;
-
-            case
-                "View Low Inventory": viewInventory();
+            case "View Low Inventory":
+                viewInventory();
                 break;
-
-            case
-                "Add to Inventory": addInventory();
+            case "Add to Inventory":
+                addInventory();
                 break;
-
-            case
-                "Add New Product": addProduct();
+            case "Add New Product":
+                addProduct();
+                break;
+            case "Quit":
+                exit();
                 break;
         }
     });
@@ -57,17 +57,13 @@ function start() {
 //Manager views all the available products in the store
 function viewProducts() {
     // query the database for all items being listed
-    connection.query("SELECT * FROM products", function (err, results) {
+    connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function (err, results) {
         if (err) throw err;
 
         //console.log(results);
-        console.log('----------------------------------------------------------------------------------------------------');
-        console.log('_____________________________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._________________________');
-        console.log('----------------------------------------------------------------------------------------------------');
-        console.log("\n===================================");
-        console.log('\n\n"View Products for Sale"');
-        console.log("\n===================================");
-
+        console.log('----------------------------------------------------------------------');
+        console.log('___________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~._____________');
+        console.log('----------------------------------------------------------------------');
         console.table(results);
         start();
     });
@@ -79,9 +75,18 @@ function viewInventory() {
     connection.query("SELECT * FROM products WHERE stock_quantity <=5 ", function (err, results) {
         if (err) throw err;
         //console.log(results);
-        console.log('---------------------------------------"View Low Inventory"-----------------------------------------------------');
+        console.log('View Low Inventory');
         console.log("");
         console.table(results);
+        start();
+    });
+
+    connection.query("SELECT * FROM products WHERE stock_quantity >5 ", function (err, results) {
+        if (err) throw err;
+        //console.log(results);
+        console.log("\n======================================");
+        console.log("\nHOORAY!! We don't have low inventory!!");
+        console.log("\n======================================");
         start();
     });
 
@@ -89,8 +94,6 @@ function viewInventory() {
 
 //Manager updates an inventory in the stock
 function addInventory() {
-    console.log("Add to the Inventory...\n");
-
     inquirer.prompt([
         {
             name: "Item_id",
@@ -100,24 +103,44 @@ function addInventory() {
         {
             name: "add_inv",
             type: "input",
-            message: "How many units of this item would you like to have in the in store stock quantity?"
+            message: "How many units of this item would you like to have in the in store stock quantity?",
         }
+
     ]).then(function (managerInput) {
 
-        connection.query(
-            "UPDATE products SET ? WHERE ?",
-            [{
-                stock_quantity: managerInput.add_inv
-            },
-            {
-                item_id: managerInput.Item_id
-            }
-            ],
-            function (err, res) {
-                if (err) throw err;
-            });
+        connection.query("SELECT * FROM products", function (err, results) {
 
-        start();
+            var chosenItem;
+
+            // Gets product who's stock needs to be updated.
+            for (var i = 0; i < results.length; i++) {
+                if (results[i].item_id === parseInt(managerInput.Item_id)) {
+                    chosenItem = results[i];
+                }
+            }
+
+            // Adds new stock  to existing stock.
+            var updatedStock = parseInt(chosenItem.stock_quantity) + parseInt(managerInput.add_inv);
+            console.log("\n============================");
+            console.log("Updated stock: " + updatedStock);
+            console.log("\n============================");
+
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                [{
+
+                    stock_quantity: updatedStock
+                },
+                {
+                    item_id: managerInput.Item_id
+                }
+                ],
+                function (err, res) {
+                    if (err) throw err;
+                });
+            start();
+        });
+
     });
 }
 
@@ -179,6 +202,10 @@ function addProduct() {
             });
         start();
     });
+}
 
+function exit() {
+    console.log("See you again!!!");
+    connection.end();
 }
 start();

@@ -34,7 +34,7 @@ function displayProducts() {
         console.log("----------------------------------------------------------------------");
         console.log('____________.~"~._.~"~._.~Welcome to BAMazon~._.~"~._.~"~.____________');
         console.log("----------------------------------------------------------------------");
-        console.table("\n" + results);
+        console.table(results);
         userPurchase();
     });
 }

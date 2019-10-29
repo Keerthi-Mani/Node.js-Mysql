@@ -17,11 +17,12 @@ department_name VARCHAR(100) NOT NULL,
 price DECIMAL(10,2) NOT NULL,
 -- Create an integer column called "stock" --
 stock_quantity INTEGER(11) NOT NULL,
+product_sales INTEGER(11) default 0,
   PRIMARY KEY (item_id)
 );
 
 -- Insert the value in to the table
-INSERT INTO products (product_name, department_name, price, stock_quantity, product_sales)
+INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Listerine Total Care", "Personal Care", 6.57, 150),
 ("Kittles Cat Treats", "Pet Supplies", 2.37, 245),
 ("Pots & Pans", "Kitchen", 39.99, 20),
@@ -33,7 +34,7 @@ VALUES ("Listerine Total Care", "Personal Care", 6.57, 150),
 ("Brawny Paper Towels", "Grocery", 4.25, 400),
 ("Ibuprophen", "Pharmacy", 4.95, 389);
 
-SELECT * FROM products
+SELECT * FROM products;
 
 CREATE TABLE departments(
     -- Create a numeric column called "department_id" which will automatically increment its default value as we create new rows. --
@@ -47,13 +48,13 @@ PRIMARY KEY (department_id)
 
 -- Insert the value in to the table
 INSERT INTO departments (department_name, over_head_costs)
-VALUES ("Personal Care",  15000.00),
-("Kitchen", 20000.00),
-("Clothing", 50000.00),
-("Cosmetics", 3000.00),
-("Garden & Outdoor", 2000.00),
-("Produce", 35000.00),
-("Pharmacy", 12000.00),
-("Video Games", 50000.00),
-("Grocery", 40000.00),
-("Pet Supplies",11000.00);
+VALUES ("Personal Care",  150.00),
+("Kitchen", 200.00),
+("Clothing", 500.00),
+("Cosmetics", 300.00),
+("Garden & Outdoor", 200.00),
+("Produce", 350.00),
+("Pharmacy", 120.00),
+("Video Games", 500.00),
+("Grocery", 400.00),
+("Pet Supplies",110.00);

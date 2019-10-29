@@ -113,7 +113,7 @@ npm install
 
 ## Author
 
-* <strong>[Keerthi Mani]</strong>(https://github.com/Keerthi-Mani)
+* <strong>Keerthi Mani</strong>
 
 ## Acknowledgement
 
